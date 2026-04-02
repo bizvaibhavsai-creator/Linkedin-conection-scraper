@@ -15,9 +15,9 @@ echo "=== Installing dependencies ==="
 apt install -y python3 python3-pip python3-venv nginx certbot python3-certbot-nginx
 
 # Playwright system dependencies
-apt install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 \
+apt install -y libnss3 libnspr4 libatk1.0-0t64 libatk-bridge2.0-0t64 libcups2t64 libdrm2 \
     libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 \
-    libpango-1.0-0 libcairo2 libasound2 libatspi2.0-0 libwayland-client0
+    libpango-1.0-0 libcairo2 libasound2t64 libatspi2.0-0t64 libwayland-client0
 
 echo "=== Creating app user ==="
 id -u $APP_USER &>/dev/null || useradd -r -m -s /bin/bash $APP_USER
