@@ -1,10 +1,14 @@
 import csv
 import io
+import os
 import re
 
 import streamlit as st
 
 from linkedin_scraper.scraper import run
+
+# Detect if running on a server (no display)
+IS_SERVER = not os.environ.get("DISPLAY") and os.name != "nt" and not os.environ.get("__CFBundleIdentifier")
 
 st.set_page_config(page_title="LinkedIn Connection Scraper", layout="centered")
 
@@ -17,11 +21,15 @@ profile_url = st.text_input(
     placeholder="https://www.linkedin.com/in/username",
 )
 
-auth_method = st.radio(
-    "Authentication Method",
-    options=["Browser Login", "Cookie Import"],
-    help="Browser Login opens a Chromium window for you to log in manually. Cookies are saved for reuse.",
-)
+if IS_SERVER:
+    auth_method = "Cookie Import"
+    st.info("Running on server — cookie import is the only auth method available.")
+else:
+    auth_method = st.radio(
+        "Authentication Method",
+        options=["Browser Login", "Cookie Import"],
+        help="Browser Login opens a Chromium window for you to log in manually. Cookies are saved for reuse.",
+    )
 
 cookie_string = None
 if auth_method == "Cookie Import":
@@ -52,7 +60,7 @@ if st.button("Start Scraping", type="primary", use_container_width=True):
                 profile_url=profile_url,
                 auth_method="cookies" if auth_method == "Cookie Import" else "browser",
                 cookie_string=cookie_string,
-                headless=False,
+                headless=IS_SERVER,
                 progress_callback=on_progress,
             )
 

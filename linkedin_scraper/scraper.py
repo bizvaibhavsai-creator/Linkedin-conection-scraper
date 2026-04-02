@@ -12,9 +12,16 @@ from .utils import LINKEDIN_BASE, human_delay, logger
 
 def launch_browser(pw, headless=False):
     """Launch Chromium with anti-detection args."""
+    args = [
+        "--disable-blink-features=AutomationControlled",
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+    ]
     browser = pw.chromium.launch(
         headless=headless,
-        args=["--disable-blink-features=AutomationControlled"],
+        args=args,
     )
     return browser
 
